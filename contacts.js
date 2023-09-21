@@ -35,7 +35,8 @@ async function removeContact(contactId) {
   try {
     const data = await fs.readFile(contactsPath)
     const dataParsed = JSON.parse(data)
-    const newContactsArray = dataParsed.splice(dataParsed.findIndex(({ id }) => id === contactId), 1) || null
+    const contactIndex = dataParsed.find(({id}) => id === contactId) || null
+    const newContactsArray = contactIndex ? dataParsed.splice(dataParsed.findIndex(({ id }) => id === contactId), 1) : null
     await fs.writeFile(contactsPath, JSON.stringify(dataParsed))
     console.table(newContactsArray);
   } catch (error) {
